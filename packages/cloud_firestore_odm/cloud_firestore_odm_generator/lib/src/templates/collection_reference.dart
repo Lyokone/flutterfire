@@ -18,6 +18,10 @@ abstract class ${data.collectionReferenceInterfaceName}
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
+    final data = snapshot.data()!;
+    data['id'] = snapshot.id;
+    data['path'] = snapshot.reference.path;
+    data['parent'] = snapshot.reference.parent;
     return ${data.fromJson('snapshot.data()!')};
   }
  
@@ -25,7 +29,11 @@ abstract class ${data.collectionReferenceInterfaceName}
     ${data.type} value,
     SetOptions? options,
   ) {
-    return ${data.toJson('value')};
+    final json = ${data.toJson('value')};
+    json.remove('id');
+    json.remove('path');
+    json.remove('parent');
+    return json;
   }
 
 ${_parentProperty(data, abstract: true)}
